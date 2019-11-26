@@ -1,0 +1,106 @@
+#!/usr/bin/perl -w
+use Term::ANSIColor qw(:constants);
+use File::Path;
+#$Term::ANSIColor::AUTORESET = 1;
+#
+# Run log file  
+#
+# Usage: NA
+# 
+# Noel Lacson, November 12, 2019
+#                                        
+#
+print BOLD GREEN,"W	 E	L	C	O	M	E	",BOLD BLUE,"T	O",RESET,"	    \n";
+print BOLD YELLOW,"::::::'##::::'###::::'##::::'##:'##::::'##:'########:::::'###::::\n";
+print BOLD YELLOW,":::::: ##:::'## ##::: ###::'###: ##:::: ##: ##.... ##:::'## ##:::\n";
+print BOLD YELLOW,":::::: ##::'##:. ##:: ####'####: ##:::: ##: ##:::: ##::'##:. ##::\n";
+print BOLD YELLOW,":::::: ##:'##:::. ##: ## ### ##: ##:::: ##: ########::'##:::. ##:\n";
+print BOLD YELLOW,"'##::: ##: #########: ##. #: ##: ##:::: ##: ##.. ##::: #########:\n";
+print BOLD YELLOW," ##::: ##: ##.... ##: ##:.:: ##: ##:::: ##: ##::. ##:: ##.... ##:\n";
+print BOLD YELLOW,". ######:: ##:::: ##: ##:::: ##:. #######:: ##:::. ##: ##:::: ##:\n";
+print BOLD YELLOW,":......:::..:::::..::..:::::..:::.......:::..:::::..::..:::::..::\n",RESET;
+
+
+
+use Cwd;
+my $host=`cat /proc/sys/kernel/hostname`;
+
+print BOLD GREEN,"Jamura Device ID:",RESET;print "$host";
+print BOLD GREEN,"Site ID         :",RESET;my $site = <STDIN>;
+print BOLD GREEN,"GDC Support	  :",RESET;my $gid = <STDIN>;
+print BOLD GREEN,"Field User Email:",RESET;my $tce = <STDIN>;
+print BOLD GREEN,"Field User Cell :",RESET;my $tc = <STDIN>;
+print BOLD GREEN,"C & I Date	  :",RESET;my $dte = <STDIN>;
+chomp $host;
+chomp $site;
+chomp $gid;
+chomp $tce;
+chomp $tc;
+chomp $dte;
+
+
+open( MYFILE, '>>loginInfo.txt' );    #creates file loginInfo.txt
+print MYFILE "Jamura Device ID	:$host\n";
+print MYFILE "Site ID         	:$site\n";
+print MYFILE "GDC Support	:$gid\n";
+print MYFILE "Field User Email	:$tce\n";
+print MYFILE "Field User Cell 	:$tc\n";
+print MYFILE "C & I Date	:$dte\n";
+
+system("perl -pi.back -e 's/404: Not Found/ /g;' /var/log/loginInfo.txt");
+
+system("mkdir $site");
+my $cmd ="sudo git add ";
+my $c = "sudo scp ";
+my $chk =system('sudo git remote -v | grep push');
+my $fchk =index($chk,"push");
+system('clear');
+
+
+system('sudo rm -rf .git >/dev/null; sudo git init >/dev/null');
+#system('sudo git init');
+system('sudo git remote add origin https://github.com/JamuraF2G/nokialogs.git >/dev/null');
+#system('sudo git remote add origin git@github.com:JamuraF2G/nokialogs.git');
+system('sudo git remote -v >/dev/null');
+system('sudo git config --global user.email "noel.lacson@f2gsolutions.com" >/dev/null');
+system('sudo git config --global user.name "jamuraf2g" >/dev/null');
+print "Please wait....";
+system('sudo git pull --rebase origin master >/dev/null');
+#system('sudo git branch master');
+#addit:
+my $lista="loglist";
+open(FILE,"<$lista") || die "File not found";
+chomp(my @script = <FILE>);
+
+foreach my $s (@script){
+#system("$cmd$s");
+system("$c$s $site >/dev/null");
+}
+system("zip -r $site.zip $site >/dev/null");
+sub remove
+{
+    my $dir = "$site";
+    rmtree $dir;
+
+}
+#system("sudo git reset --mixed origin/master");
+system("$cmd$site.zip >/dev/null");
+#system('sudo git add messages'); 
+
+system('sudo git commit -m "tmobilelog" >/dev/null');
+system('sudo ./pushGit >/dev/null');
+#system("x-www-browser https://github.com/JamuraF2G/nokialogs");
+#system('xdg-open https://github.com/JamuraF2G/nokialogs/blob/master/$site.zip');
+system('sudo git rm -r --cached . >/dev/null');
+#system('sudo rm $site/*');
+system('sudo rm *.zip >/dev/null');
+#system('sudo rmdir $site/');
+print "Completed Thank you...";
+sleep(5);
+
+#}else {
+	#print "Please enter Site ID\n";
+#	return $site;	
+#}
+remove();
+exit(0);

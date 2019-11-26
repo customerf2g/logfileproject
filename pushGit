@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+spawn ./pcmd
+
+
+expect "sudo git push origin master"
+expect "Username for\r"
+send "jamuraf2g\r"
+expect "Password for\r"
+send "Nok2019_f2g\r"
+interact
