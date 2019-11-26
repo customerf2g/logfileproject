@@ -36,9 +36,9 @@ if (-e $filename) {
 system('command -v expect >/dev/null 2>&1 || { echo >&2 "Expect not installed. Installing...";sudo apt-get --assume-yes install expect >/dev/null ; }');
 my $Path = getcwd;
 #print "Processing....";
-my $cmd ="sudo curl -s -LkO https://raw.githubusercontent.com/JamuraF2G/logfileproject/master/";
-system("sudo curl -s -LkO https://raw.githubusercontent.com/JamuraF2G/logfileproject/master/gitlist");
-system("sudo curl -s -LkO https://raw.githubusercontent.com/JamuraF2G/logfileproject/master/loglist");
+my $cmd ="sudo curl -s -LkO https://raw.githubusercontent.com/customerf2g/logfileproject/master/";
+system("sudo curl -s -LkO https://raw.githubusercontent.com/customerf2g/logfileproject/master/gitlist");
+system("sudo curl -s -LkO https://raw.githubusercontent.com/customerf2g/logfileproject/master/loglist");
 my $lista="gitlist";
 open(FILE,"<$lista") || die "File not found";
 chomp(my @script = <FILE>);
