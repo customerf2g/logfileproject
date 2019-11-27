@@ -42,7 +42,7 @@ chomp $dte;
 open( MYFILE, '>>loginInfo.txt' );    #creates file loginInfo.txt
 print MYFILE "Jamura Device ID	:$host\n";
 print MYFILE "Site ID         	:$site\n";
-print MYFILE "GDC Support	:$gid\n";
+print MYFILE "GDC Support Email	:$gid\n";
 print MYFILE "Field User Email	:$tce\n";
 print MYFILE "Field User Cell 	:$tc\n";
 print MYFILE "C & I Date	:$dte\n";
